@@ -10,7 +10,7 @@ def index():
     homepage += "<a href=/welcome?nick=jessica>傳送使用者暱稱</a><br>"
     homepage += "<a href=/about>家妍簡介網頁</a><br>"
     homepage += "<a href=/account>網頁表單輸入帳密傳值</a><br>"
-    homepage += "<a href=/account>網頁表單輸入帳密傳值</a><br>"
+    homepage += "<a href=/read>人選知人演員查詢</a><br>"
     return homepage
 
 @app.route("/mis")
@@ -45,7 +45,7 @@ def account():
 def read():
     Result = ""
     db = firestore.client()
-    collection_ref = db.collection("人選知人造浪者")    
+    collection_ref = db.collection("人選之人造浪者")    
     docs = collection_ref.get()    
     for doc in docs:         
         Result += "文件內容：{}".format(doc.to_dict()) + "<br>"    
