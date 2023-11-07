@@ -4,11 +4,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    homepage = "<h1>邱家妍Python網頁</h1>"
+    homepage = "<h1>邱家妍Python網頁1107</h1>"
     homepage += "<a href=/mis>MIS</a><br>"
     homepage += "<a href=/today>顯示日期時間</a><br>"
     homepage += "<a href=/welcome?nick=jessica>傳送使用者暱稱</a><br>"
     homepage += "<a href=/about>家妍簡介網頁</a><br>"
+    homepage += "<a href=/account>網頁表單輸入帳密傳值</a><br>"
     homepage += "<a href=/account>網頁表單輸入帳密傳值</a><br>"
     return homepage
 
@@ -39,6 +40,17 @@ def account():
         return result
     else:
         return render_template("account.html")
+
+@app.route("/read")
+def read():
+    Result = ""
+    db = firestore.client()
+    collection_ref = db.collection("人選知人造浪者")    
+    docs = collection_ref.get()    
+    for doc in docs:         
+        Result += "文件內容：{}".format(doc.to_dict()) + "<br>"    
+    return Result
+
 
 #if __name__ == "__main__":
     #app.run()
