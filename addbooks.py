@@ -32,10 +32,10 @@ docs = [
 
 {
   "title": "靜宜求學趣",
-  "author": "(您的姓名)",
+  "author": "邱家妍",
   "cover": "(網路照片網址)",
   "url": "(您的個人網頁網址)",
-  "anniversary": (您的年齡)
+  "anniversary": 20
 }
 
 ]
