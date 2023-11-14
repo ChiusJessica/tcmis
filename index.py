@@ -1,16 +1,23 @@
+import firebase_admin
+from firebase_admin import credentials
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+
 from flask import Flask, render_template, request
 from datetime import datetime
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    homepage = "<h1>邱家妍Python網頁1114</h1>"
+    homepage = "<h1>邱家妍Python網頁2023-11-14</h1>"
     homepage += "<a href=/mis>MIS</a><br>"
     homepage += "<a href=/today>顯示日期時間</a><br>"
     homepage += "<a href=/welcome?nick=jessica>傳送使用者暱稱</a><br>"
     homepage += "<a href=/about>家妍簡介網頁</a><br>"
     homepage += "<a href=/account>網頁表單輸入帳密傳值</a><br>"
     homepage += "<a href=/read>人選之人演員查詢</a><br>"
+    homepage += "<a href=/search>根據角色查詢演員</a><br>"
+    homepage += "<a href=/book>精選圖書列表</a><br>"
     return homepage
 
 @app.route("/mis")
@@ -45,12 +52,16 @@ def account():
 def read():
     Result = ""
     db = firestore.client()
-    collection_ref = db.collection("人選之人造浪者")    
+    collection_ref = db.collection("圖書精選")    
     docs = collection_ref.get()    
-    for doc in docs:         
-        Result += "文件內容：{}".format(doc.to_dict()) + "<br>"    
+    for doc in docs:
+        bk = doc.to_dict()         
+        Result += "書名：<a href=" + bk["url"] + ">" + bk["title"] + "</a><br>"    
+        Result += "作者：" + bk["author"] + "<br>"    
+        Result += str(bk["anniversary"]) + "週年紀念版<br>"
+        Result += "<img src=" + bk["cover"] + "> </img><br><br>"
     return Result
 
 
-#if __name__ == "__main__":
-    #app.run()
+if __name__ == "__main__":
+    app.run(debug=True)
