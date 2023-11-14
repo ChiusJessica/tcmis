@@ -62,6 +62,15 @@ def read():
         Result += "<img src=" + bk["cover"] + "> </img><br><br>"
     return Result
 
+@app.route("/query", methods=["GET", "POST"])
+def account():
+    if request.method == "POST":
+        user = request.form["user"]
+        pwd = request.form["pwd"]
+        result = "您輸入的帳號是:" + user + "; 密碼為:" + pwd
+        return result
+    else:
+        return render_template("searchbk.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
