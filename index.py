@@ -4,7 +4,11 @@ cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 from flask import Flask, render_template, request
-from datetime import datetime
+from datetime import datetime,timezone, timedelta
+
+import requests
+from bs4 import BeautifulSoup
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -18,6 +22,9 @@ def index():
     homepage += "<a href=/read>人選之人演員查詢</a><br>"
     homepage += "<a href=/search>根據角色查詢演員</a><br>"
     homepage += "<a href=/book>精選圖書列表</a><br>"
+    homepage += "<a href=/query>書名查詢</a><br><br>"
+    homepage += "<a href=/spider>網路爬蟲抓曲子青老師課程</a><br>"
+
     return homepage
 
 @app.route("/mis")
@@ -72,5 +79,19 @@ def account():
     else:
         return render_template("searchbk.html")
 
+@app.route("/spider")
+def spider():
+    url = "https://www1.pu.edu.tw/~tcyang/course.html"
+    Data = requests.get(url)
+    Data.encoding = "utf-8"
+    sp = BeautifulSoup(Data.text, "html.parser")
+    result=sp.select(".team-box")
+    result = ""
+    for x in result:
+        result += x.text
+        result += x.find("a").get("href")
+    return result
+
 if __name__ == "__main__":
     app.run(debug=True)
+
